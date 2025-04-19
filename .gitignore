@@ -1,3 +1,8 @@
+# do not include output files of plots
+**.png 
+**.svg
+**.jpg
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
