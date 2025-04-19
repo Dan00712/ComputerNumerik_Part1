@@ -20,8 +20,9 @@ def stable_root(p, q):
     if D <= 0:
         return DTYPE('nan')
     s = np.sign(p) if p != 0 else 1.0
-    x1 = -(p + s*np.sqrt(D))/2
-    x2 = q/x1
+    x1 = -(p + s*np.sqrt(D))/2  # stable version
+                                # in this case s = +1
+    x2 = q/x1                   # x2 is numerically unstable in unstable root
     return x2
 
 def true_root(p, q):
