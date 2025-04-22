@@ -1,2 +1,5 @@
 numpy
+mpmath
 matplotlib
+
+progressbar2
