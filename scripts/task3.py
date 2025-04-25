@@ -7,8 +7,8 @@ DTYPE=np.float64
 EPS = np.finfo(DTYPE).eps
 mp.dps = 34 # approximate float128, which has a eps of ~1E-34
 
-def unstable_root(p, q):
-    p, q = DTYPE(p), DTYPE(q)
+def root(p, q, dtype=DTYPE):
+    p, q = dtype(p), dtype(q)
     D = p**2 - 4*q
     if D <= 0:
         return DTYPE('nan')
@@ -26,12 +26,7 @@ def stable_root(p, q):
     return x2
 
 def true_root(p, q):
-    p = mp.mpf(p)
-    q = mp.mpf(q)
-    D = p**2 - 4*q
-    if D <= 0:
-        return mp.mpf('nan')
-    return (-p + mp.sqrt(D))/2
+    return root(p, q, dtype=mp.mpf)
 
 P = np.logspace(-2, 16, 800)
 q = 1.0
@@ -41,7 +36,7 @@ rel_err_s = []
 for p in P:
     x_t = mp.mpf(true_root(p, q))
 
-    x_u = mp.mpf(unstable_root(p, q))
+    x_u = mp.mpf(root(p, q))
     err_u = abs((x_t - x_u)/x_t)
     rel_err_u.append(err_u)
 
