@@ -3,9 +3,8 @@ from mpmath import mp
 
 import matplotlib.pyplot as plt
 
-DTYPE=np.float64
-EPS = np.finfo(DTYPE).eps
-mp.dps = 34 # approximate float128, which has a eps of ~1E-34
+import const
+from const import *
 
 def root(p, q, dtype=DTYPE):
     p, q = dtype(p), dtype(q)
@@ -14,8 +13,8 @@ def root(p, q, dtype=DTYPE):
         return DTYPE('nan')
     return (-p + np.sqrt(D))/2
 
-def stable_root(p, q):
-    p, q = DTYPE(p), DTYPE(q)
+def stable_root(p, q, dtype=DTYPE):
+    p, q = dtype(p), dtype(q)
     D = p**2 - 4*q
     if D <= 0:
         return DTYPE('nan')
@@ -26,9 +25,8 @@ def stable_root(p, q):
     return x2
 
 def true_root(p, q):
-    return root(p, q, dtype=mp.mpf)
+    return stable_root(p, q, dtype=mp.mpf)
 
-P = np.logspace(-2, 16, 800)
 q = 1.0
 rel_err_u = []
 rel_err_s = []

@@ -2,10 +2,8 @@ import numpy as np
 from mpmath import mp
 
 import matplotlib.pyplot as plt
-
-DTYPE=np.float64
-EPS = np.finfo(DTYPE).eps
-mp.dps = 34 # approximate float128, which has a eps of ~1E-34
+import const
+from const import *
 
 def root(p, q, dtype=DTYPE):
     p, q = dtype(p), dtype(q)
@@ -14,8 +12,8 @@ def root(p, q, dtype=DTYPE):
         return DTYPE('nan')
     return (-p - np.sqrt(D))/2
 
-def stable_root(p, q):
-    p, q = DTYPE(p), DTYPE(q)
+def stable_root(p, q, dtype=DTYPE):
+    p, q = dtype(p), dtype(q)
     D = p**2 - 4*q
     if D <= 0:
         return DTYPE('nan')
@@ -25,21 +23,20 @@ def stable_root(p, q):
     return x1
 
 def true_root(p, q):
-    return root(p, q, dtype=mp.mpf)
+    return stable_root(p, q, dtype=mp.mpf)
 
-P = np.logspace(-2, 16, 800)
 q = 1.0
 rel_err_u = []
 rel_err_s = []
 
 for p in P:
-    x_t = mp.mpf(true_root(p, q))
+    x_t = true_root(p, q)
 
-    x_u = mp.mpf(root(p, q))
+    x_u = root(p, q)
     err_u = abs((x_t - x_u)/x_t)
     rel_err_u.append(err_u)
 
-    x_s = mp.mpf(stable_root(p, q))
+    x_s = stable_root(p, q)
     err_s = abs((x_t - x_s)/x_t)
     rel_err_s.append(err_s)
 
