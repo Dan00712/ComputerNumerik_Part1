@@ -43,8 +43,8 @@ for p in P:
     rel_err_s.append(err_s)
 
 plt.figure(figsize=(10,6))
-plt.loglog(P, rel_err_u, label="Instabil (float64)", lw=2)
-plt.loglog(P, rel_err_s, label="Stabil (Vieta, float64)", lw=2)
+plt.loglog(P, rel_err_u, label="Instabil (float64)", lw=2, linestyle='dotted')
+plt.loglog(P, rel_err_s, label="Stabil (Vieta, float64)", lw=2, linestyle='solid')
 plt.axhline(y=EPS, color='gray', linestyle='--', label="Maschinengenauigkeit (float64)")
 plt.xlabel(r"$p$")
 plt.ylabel("Relativer Fehler")
